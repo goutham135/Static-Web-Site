@@ -56,49 +56,63 @@
     const apiToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI2YWU0ODdiLTU3MDYtNGE3ZS04YTY5LTMzYThhOWM5NjMxYiIsIm5vbmNlIjoiZWI2MzYyMWUtMTMwZi00ZTE0LTlmOWMtOTY3MGNiZGFmN2RiIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzI3MjQ2NjY1fQ.rVG_QKMcycBEnzIFiAQuixfu6K_oEkAq2Y8Gukco3b8';
     // Function to fetch data and update the table
     function fetchData() {
-      $.ajax({
-        url: apiUrl,
-        method: 'GET',
-        dataType: 'json',
-        headers: {
-          Authorization: `Bearer ${apiToken}`, // Add your authorization header
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
-        },
-        success: function (data) {
-          // Clear existing table rows
-          const tbody = $('#data-table tbody');
+    //   $.ajax({
+    //     url: apiUrl,
+    //     method: 'GET',
+    //     dataType: 'json',
+    //     headers: {
+    //       Authorization: `Bearer ${apiToken}`, // Add your authorization header
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    //     },
+    //     success: function (data) {
+    //       // Clear existing table rows
+    //       const tbody = $('#data-table tbody');
           
-          const top10Items = data.slice(0, 10);
+    //       const top10Items = data.slice(0, 10);
 
-          var html = '';
-          // Populate table with new data
-          top10Items.forEach(item => {
-            const row = `
-              <tr>
-                <td>${item.uid}</td>
-                <td>${item.username}</td>
-                <td>${item.weightedWagered}</td>
-              </tr>
-            `;
-            html.append(row);
-          });
-          tbody.empty();
-          tbody.append(html);
-          // Hide loading message
-          $('.loading').hide();
-        },
-        error: function () {
-          alert('Failed to fetch data from the server.');
+    //       var html = '';
+    //       // Populate table with new data
+    //       top10Items.forEach(item => {
+    //         const row = `
+    //           <tr>
+    //             <td>${item.uid}</td>
+    //             <td>${item.username}</td>
+    //             <td>${item.weightedWagered}</td>
+    //           </tr>
+    //         `;
+    //         html.append(row);
+    //       });
+    //       tbody.empty();
+    //       tbody.append(html);
+    //       // Hide loading message
+    //       $('.loading').hide();
+    //     },
+    //     error: function () {
+    //       alert('Failed to fetch data from the server.');
+    //     }
+    //   });
+
+      const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+      const apiUrl = "https://roobetconnect.com/affiliate/v2/stats?userId=26ae487b-5706-4a7e-8a69-33a8a9c9631b&startDate&endDate&gameIdentifiers&categories&providers";
+      
+      fetch(proxyUrl + apiUrl, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer YOUR_API_TOKEN" // Add your API token here
         }
-      });
+      })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error("Error:", error));
+
     }
 
     // Initial fetch
     fetchData();
 
     // Set up polling to fetch data every 10 seconds
-    setInterval(fetchData, 10000);
+    // setInterval(fetchData, 10000);
   });
 </script>
 

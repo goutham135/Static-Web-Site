@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Auto-Updating Table</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -27,4 +28,69 @@
       text-align: center;
       margin: 20px 0;
     }
-  </style
+  </style>
+</head>
+<body>
+  <h1>Auto-Updating Table</h1>
+  <div class="loading">Loading data...</div>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data rows will be dynamically inserted here -->
+    </tbody>
+  </table>
+</body>
+</html>
+
+
+
+<script>
+  $(document).ready(function () {
+    const apiUrl = 'https://your-api-endpoint.com/data'; // Replace with your API endpoint
+
+    // Function to fetch data and update the table
+    function fetchData() {
+      $.ajax({
+        url: apiUrl,
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // Clear existing table rows
+          const tbody = $('#data-table tbody');
+          tbody.empty();
+
+          // Populate table with new data
+          data.forEach(item => {
+            const row = `
+              <tr>
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.value}</td>
+              </tr>
+            `;
+            tbody.append(row);
+          });
+
+          // Hide loading message
+          $('.loading').hide();
+        },
+        error: function () {
+          alert('Failed to fetch data from the server.');
+        }
+      });
+    }
+
+    // Initial fetch
+    fetchData();
+
+    // Set up polling to fetch data every 10 seconds
+    setInterval(fetchData, 10000);
+  });
+</script>
+

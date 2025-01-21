@@ -62,6 +62,8 @@
         dataType: 'json',
         headers: {
           Authorization: `Bearer ${apiToken}`, // Add your authorization header
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
         },
         success: function (data) {
           // Clear existing table rows

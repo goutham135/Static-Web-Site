@@ -52,21 +52,26 @@
 
 <script>
   $(document).ready(function () {
-    const apiUrl = 'https://your-api-endpoint.com/data'; // Replace with your API endpoint
-
+    const apiUrl = 'https://roobetconnect.com/affiliate/v2/stats?userId=26ae487b-5706-4a7e-8a69-33a8a9c9631b&startDate&endDate&gameIdentifiers&categories&providers'; // Replace with your API endpoint
+    const apiToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI2YWU0ODdiLTU3MDYtNGE3ZS04YTY5LTMzYThhOWM5NjMxYiIsIm5vbmNlIjoiZWI2MzYyMWUtMTMwZi00ZTE0LTlmOWMtOTY3MGNiZGFmN2RiIiwic2VydmljZSI6ImFmZmlsaWF0ZVN0YXRzIiwiaWF0IjoxNzI3MjQ2NjY1fQ.rVG_QKMcycBEnzIFiAQuixfu6K_oEkAq2Y8Gukco3b8';
     // Function to fetch data and update the table
     function fetchData() {
       $.ajax({
         url: apiUrl,
         method: 'GET',
         dataType: 'json',
+        headers: {
+          Authorization: `Bearer ${apiToken}`, // Add your authorization header
+        },
         success: function (data) {
           // Clear existing table rows
           const tbody = $('#data-table tbody');
-          tbody.empty();
+          
+          const top10Items = data.slice(0, 10);
 
+          var html = '';
           // Populate table with new data
-          data.forEach(item => {
+          top10Items.forEach(item => {
             const row = `
               <tr>
                 <td>${item.id}</td>
@@ -74,9 +79,10 @@
                 <td>${item.value}</td>
               </tr>
             `;
-            tbody.append(row);
+            html.append(row);
           });
-
+          tbody.empty();
+          tbody.append(html);
           // Hide loading message
           $('.loading').hide();
         },
